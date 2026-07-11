@@ -1,0 +1,18 @@
+# POS-ROUTER.UC
+# neutral / raw.fusion / no identity
+
+pos.core: router.uc
+pos.mode: fuse
+pos.state: neutral
+pos.bind: none
+
+pos.home: bir
+pos.target: iki1uc
+
+pos.drift: micro
+pos.route: raw.fuse.chain
+pos.impulse: pipeline012
+
+# Zweck
+# reine technische Positionierung für UC-Fusion
+# keine Identität, keine Achsen, keine Respo
