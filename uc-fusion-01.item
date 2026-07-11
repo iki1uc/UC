@@ -1,0 +1,15 @@
+# UC-FUSION-01
+# passive until bench-viewer
+
+station.id: uc.fusion.01
+station.form: raw.block
+station.mode: passive
+station.bind: none
+
+station.kern: fuse.raw
+station.impulse: pipeline012
+
+station.state: bench.active
+
+# Zweck
+# minimale Fusionseinheit für Bench-Viewer
