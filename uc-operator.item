@@ -1,0 +1,17 @@
+# UC-OPERATOR
+# raw.fusion impulse
+
+operator.core: uc
+operator.form: fuse.raw
+operator.mode: neutral
+operator.bind: none
+
+operator.input: iki.raw + bir.raw
+operator.output: fuse.raw
+
+operator.impulse: pipeline012
+operator.state: active.raw
+
+# Zweck
+# Fusion von iki/bir Material
+# ohne Identität, ohne Achsen, ohne Respo
