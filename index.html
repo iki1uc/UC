@@ -2,101 +2,45 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>UC – Minimal‑PC</title>
-
+<title>UC – AMIGA MOVE SCENE</title>
 <style>
-body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
-h1, h2 { color:#6cf; }
-pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; }
-.green { color:#0f0; }
-.yellow { color:#ff0; }
-.red { color:#f00; }
+body { margin:0; overflow:hidden; background:#000; }
+canvas { display:block; }
 </style>
 </head>
 
 <body>
-
-<h1>UC – Minimal‑PC</h1>
-
-<h2>CPU (HOLO.build)</h2>
-<pre id="cpu"></pre>
-
-<h2>GPU (FTG)</h2>
-<pre id="gpu"></pre>
-
-<h2>RAM (UC_RESPO)</h2>
-<pre id="ram"></pre>
-
-<h2>VISIO (VIAIV)</h2>
-<pre id="visio"></pre>
-
-<h2>CACHE (CHDSK)</h2>
-<pre id="cache"></pre>
-
-<h2>MANA (AU / RA / minTH)</h2>
-<pre id="mana"></pre>
-
-<h2>128k‑Chip (QI/IQQ)</h2>
-<pre id="chip"></pre>
+<canvas id="scene" width="900" height="600"></canvas>
 
 <script type="module">
-    import { HOLO_BUILD } from "./HOLO.build.js";
-    import { FTG } from "./FTG.js";
-    import { UC_RESPO } from "./UC.respo.js";
-    import { VISIO } from "./VIAIV.js";
-    import { CACHE } from "./CACHE.js";
-    import { MANA } from "./Mana.js";
-    import { CHIP128 } from "./128k.js";
+    import { PC } from "./PC.js";
+    import { VISIO3 } from "./VISIO3.js";
 
-    function updatePC() {
+    const canvas = document.getElementById("scene");
+
+    function loop() {
 
         const sys = { value: Math.random()*10 };
         const tem = { value: Math.random()*10, time: Math.random()*10 };
         const iki = { core: 4 };
         const narrativ = Math.floor(Math.random()*5)+1;
-        const neutral = 1;
 
-        const uc = UC_RESPO(sys, tem, iki, neutral, null, narrativ);
-        const ftg = FTG(sys, tem, iki, neutral, narrativ);
-        const holo = HOLO_BUILD(sys, tem, iki, narrativ, neutral);
+        const pc = PC(sys, tem, iki, narrativ);
 
-        const visio = VISIO(holo.sixE.hologramm);
-        const cache = CACHE(narrativ);
-        const mana = MANA(sys.value, tem.value, narrativ);
-        const chip = CHIP128(narrativ, narrativ * 2);
+        const CONTINIUM =
+            pc.cpu.holo +
+            pc.gpu.energy +
+            pc.ram.score +
+            pc.ram.wetten +
+            pc.mana.level +
+            pc.chip.BOOST;
 
-        document.getElementById("cpu").textContent =
-`HOLO: ${holo.sixE.hologramm}
-Status: ${holo.status}`;
+        VISIO3(canvas, CONTINIUM, pc.gpu, pc.mana, pc.chip);
 
-        document.getElementById("gpu").textContent =
-`Movement: ${ftg.movement}
-Energy: ${ftg.energy}`;
-
-        document.getElementById("ram").textContent =
-`Score: ${uc.score}
-Wette: ${uc.wetten}
-Slide: ${uc.slide}`;
-
-        document.getElementById("visio").textContent =
-`Render: ${visio.render}
-Color: ${visio.color}`;
-
-        document.getElementById("cache").textContent =
-`Check: ${cache.check}
-Level: ${cache.level}`;
-
-        document.getElementById("mana").textContent =
-`AU: ${mana.AU}
-RA: ${mana.RA}
-minTH: ${mana.minTH}
-Level: ${mana.level}`;
-
-        document.getElementById("chip").textContent =
-`BOOST: ${chip.BOOST}`;
+        requestAnimationFrame(loop);
     }
 
-    setInterval(updatePC, 2000);
+    loop();
 </script>
 
 </body>
