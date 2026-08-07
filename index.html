@@ -6,36 +6,125 @@
 <style>
 body { margin:0; overflow:hidden; background:#000; }
 canvas { display:block; }
+#modebar {
+  position:fixed; top:10px; left:10px;
+  background:#111; color:#0f0; padding:10px;
+  font-family:monospace; border:1px solid #333;
+}
+button {
+  background:#111; color:#0f0; border:1px solid #333;
+  padding:6px 12px; margin-right:6px; cursor:pointer;
+}
 </style>
 </head>
 
 <body>
+
+<div id="modebar">
+  <button onclick="setMode('UC')">UC</button>
+  <button onclick="setMode('RESPO')">RESPO</button>
+  <button onclick="setMode('RUNE')">RUNE</button>
+  <button onclick="setMode('TMP')">TMP</button>
+  <button onclick="setMode('BIL')">BIL</button>
+</div>
+
 <canvas id="scene" width="900" height="600"></canvas>
 
 <script type="module">
-    import { PC } from "./PC.js";
-    import { CONTINIUM } from "./CONTINIUM.js";
-    import { VISIO_AMIGA } from "./VISIO_AMIGA.js";
+import { PC } from "./PC.js";
+import { CONTINIUM } from "./CONTINIUM.js";
+import { VISIO_AMIGA } from "./VISIO_AMIGA.js";
 
-    const canvas = document.getElementById("scene");
+let MODE = "UC";
 
-    function loop() {
+function setMode(m){
+  MODE = m;
+}
 
-        const sys = { value: Math.random()*10 };
-        const tem = { value: Math.random()*10, time: Math.random()*10 };
-        const iki = { core: 4 };
-        const narrativ = Math.floor(Math.random()*5)+1;
+async function loadJSON(name){
+  try{
+    const r = await fetch(name);
+    return await r.json();
+  }catch(e){
+    return null;
+  }
+}
 
-        const pc = PC(sys, tem, iki, narrativ);
+async function loadROM(name){
+  try{
+    const r = await fetch(name);
+    return await r.text();
+  }catch(e){
+    return "FEHLT";
+  }
+}
 
-        const cont = CONTINIUM(pc);
+const canvas = document.getElementById("scene");
 
-        VISIO_AMIGA(canvas, cont);
+async function loop(){
 
-        requestAnimationFrame(loop);
-    }
+  let cont;
 
-    loop();
+  if(MODE === "UC"){
+    const sys = { value: Math.random()*10 };
+    const tem = { value: Math.random()*10, time: Math.random()*10 };
+    const iki = { core: 4 };
+    const narrativ = Math.floor(Math.random()*5)+1;
+
+    const pc = PC(sys, tem, iki, narrativ);
+    cont = CONTINIUM(pc);
+  }
+
+  if(MODE === "RESPO"){
+    const real = await loadJSON("REAL.json");
+    const bil  = await loadJSON("BIL.json");
+
+    cont = {
+      x: real.RAUM.X,
+      y: bil.RAUM.X,
+      z: real.RAUM.Z + bil.RAUM.Z,
+      mode:"RESPO"
+    };
+  }
+
+  if(MODE === "RUNE"){
+    const list = await loadROM("LIST.rom");
+    const run  = await loadROM("RUN.rom");
+    const rom16 = await loadROM("16k.ROM");
+
+    cont = {
+      x: list.length,
+      y: run.length,
+      z: rom16.length,
+      mode:"RUNE"
+    };
+  }
+
+  if(MODE === "TMP"){
+    cont = {
+      x: Math.random()*100,
+      y: Math.random()*100,
+      z: Math.random()*100,
+      mode:"TMP"
+    };
+  }
+
+  if(MODE === "BIL"){
+    const bil = await loadJSON("BIL.json");
+    cont = {
+      x: bil.RAUM.X,
+      y: bil.RAUM.Y,
+      z: bil.RAUM.Z,
+      mode:"BIL"
+    };
+  }
+
+  VISIO_AMIGA(canvas, cont);
+
+  requestAnimationFrame(loop);
+}
+
+loop();
 </script>
 
 </body>
