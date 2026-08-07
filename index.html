@@ -1,33 +1,40 @@
 <script type="module">
-    import { HOLO_BUILD } from "./HOLO.build.js";
-    import { CHIP128 } from "./CHIP128.js";
-    import { MANA } from "./MANA.js";
-    import { AXES } from "./AXES.js";
-    import { CHANNEL } from "./CHANNEL.js";
+    import { PC } from "./PC.js";
 
-    function updatePC() {
-
-        const sys = { value: Math.random()*20, flow: 2 };
-        const tem = { value: 5, time: 3 };
-        const iki = { value: 7, core: 4 };
-
+    function update() {
+        const sys = { value: Math.random()*10 };
+        const tem = { value: Math.random()*10, time: Math.random()*10 };
+        const iki = { core: 4 };
         const narrativ = Math.floor(Math.random()*5)+1;
-        const neutral  = Math.floor(Math.random()*2);
 
-        const holo = HOLO_BUILD(sys, tem, iki, narrativ, neutral);
+        const pc = PC(sys, tem, iki, narrativ);
 
-        const chip = CHIP128(holo.aie.QI, holo.aie.IQQ, holo.aie.MIND);
-        const mana = MANA(sys.value, tem.value, narrativ);
-        const axes = AXES(holo.sixE, holo.ftg, holo.aie);
-        const chan = CHANNEL(holo.ftg, holo.sixE);
+        document.getElementById("cpu").textContent =
+`CPU HOLO: ${pc.cpu.holo}
+STATUS: ${pc.cpu.status}`;
 
-        document.getElementById("cpu").innerHTML =
-`CPU (HOLO.build)
-Hologramm   = ${holo.sixE.hologramm}
-Chip-Boost  = ${chip.BOOST}
-Mana-Level  = ${mana.LEVEL}
-TRANS       = ${chan.TRANS}`;
+        document.getElementById("gpu").textContent =
+`GPU Movement: ${pc.gpu.movement}
+Energy: ${pc.gpu.energy}`;
+
+        document.getElementById("ram").textContent =
+`RAM Score: ${pc.ram.score}
+RAM Wette: ${pc.ram.wetten}`;
+
+        document.getElementById("cache").textContent =
+`CACHE: ${pc.cache.check}
+Level: ${pc.cache.level}`;
+
+        document.getElementById("visio").textContent =
+`VISIO Render: ${pc.visio.render}
+Color: ${pc.visio.color}`;
+
+        document.getElementById("mana").textContent =
+`Mana Level: ${pc.mana.level}`;
+
+        document.getElementById("chip").textContent =
+`128k BOOST: ${pc.chip.BOOST}`;
     }
 
-    setInterval(updatePC, 2000);
+    setInterval(update, 2000);
 </script>
