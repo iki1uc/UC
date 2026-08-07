@@ -9,9 +9,11 @@ body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
 h1, h2 { color:#6cf; }
 pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; }
 
-.status-green  { color:#0f0; }
-.status-yellow { color:#ff0; }
-.status-red    { color:#f00; }
+.green  { color:#0f0; }
+.yellow { color:#ff0; }
+.red    { color:#f00; }
+.blue   { color:#4af; }
+.purple { color:#c4f; }
 </style>
 </head>
 
@@ -24,6 +26,9 @@ pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; 
 
 <h2>HOLO.build</h2>
 <pre id="aim-holo">Warte…</pre>
+
+<h2>AIR / AIV / XI / IX / X4</h2>
+<pre id="aim-axes">Warte…</pre>
 
 <script type="module">
     import { HOLO_BUILD } from "./HOLO.build.js";
@@ -40,9 +45,9 @@ pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; 
 
         const holo = HOLO_BUILD(sys, tem, iki, narrativ, neutral);
 
-        let colorClass = "status-green";
-        if (holo.sixE.hologramm < 20) colorClass = "status-red";
-        else if (holo.sixE.hologramm < 50) colorClass = "status-yellow";
+        let colorClass = "green";
+        if (holo.sixE.hologramm < 20) colorClass = "red";
+        else if (holo.sixE.hologramm < 50) colorClass = "yellow";
 
         const status = document.getElementById("aim-status");
         status.innerHTML =
@@ -64,6 +69,14 @@ Neutral     = ${holo.sixE.neutral}
 Vektor      = ${holo.sixE.vektor}
 Hologramm   = ${holo.sixE.hologramm}
 Dimension   = ${holo.sixE.dimension}`;
+
+        const axes = document.getElementById("aim-axes");
+        axes.innerHTML =
+`AIR         = ${holo.sixE.score * 1.1}
+AIV         = ${holo.sixE.wetten * 1.2}
+XI          = ${holo.ftg.movement * 1.3}
+IX          = ${holo.ftg.energy * 1.4}
+X4          = ${holo.aie.AIE * 1.5}`;
     }
 
     setInterval(updateAIM, 2000);
