@@ -1,57 +1,9 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<title>UC – 6D PC System</title>
-
-<style>
-body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
-h1, h2 { color:#6cf; }
-pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; }
-
-.green  { color:#0f0; }
-.yellow { color:#ff0; }
-.red    { color:#f00; }
-.blue   { color:#4af; }
-.purple { color:#c4f; }
-
-.history-box {
-    background:#111;
-    border:1px solid #333;
-    padding:10px;
-    height:200px;
-    overflow-y:auto;
-}
-</style>
-</head>
-
-<body>
-
-<h1>UC – 6D PC System</h1>
-
-<h2>CPU / HOLO.build</h2>
-<pre id="cpu"></pre>
-
-<h2>GPU / FTG</h2>
-<pre id="gpu"></pre>
-
-<h2>RAM / UC_RESPO</h2>
-<pre id="ram"></pre>
-
-<h2>OS-Kernel / AIE</h2>
-<pre id="kernel"></pre>
-
-<h2>Systemachsen (AIR / AIV / XI / IX / X4)</h2>
-<pre id="axes"></pre>
-
-<h2>Ereignis-Historie</h2>
-<div class="history-box" id="history"></div>
-
 <script type="module">
     import { HOLO_BUILD } from "./HOLO.build.js";
-    import { TMP } from "./TMP.respo.js";
-
-    const historyBox = document.getElementById("history");
+    import { CHIP128 } from "./CHIP128.js";
+    import { MANA } from "./MANA.js";
+    import { AXES } from "./AXES.js";
+    import { CHANNEL } from "./CHANNEL.js";
 
     function updatePC() {
 
@@ -64,50 +16,18 @@ pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; 
 
         const holo = HOLO_BUILD(sys, tem, iki, narrativ, neutral);
 
-        let colorClass = "green";
-        if (holo.sixE.hologramm < 20) colorClass = "red";
-        else if (holo.sixE.hologramm < 50) colorClass = "yellow";
+        const chip = CHIP128(holo.aie.QI, holo.aie.IQQ, holo.aie.MIND);
+        const mana = MANA(sys.value, tem.value, narrativ);
+        const axes = AXES(holo.sixE, holo.ftg, holo.aie);
+        const chan = CHANNEL(holo.ftg, holo.sixE);
 
         document.getElementById("cpu").innerHTML =
 `CPU (HOLO.build)
 Hologramm   = ${holo.sixE.hologramm}
-Dimension   = ${holo.sixE.dimension}
-Status      = <span class="${colorClass}">${holo.status}</span>`;
-
-        document.getElementById("gpu").innerHTML =
-`GPU (FTG)
-Movement    = ${holo.ftg.movement}
-Energy      = ${holo.ftg.energy}
-Quality     = ${holo.ftg.quality}`;
-
-        document.getElementById("ram").innerHTML =
-`RAM (UC_RESPO)
-Score       = ${holo.sixE.score}
-Wetten      = ${holo.sixE.wetten}
-Narrativ    = ${holo.sixE.narrativ}
-Neutral     = ${holo.sixE.neutral}`;
-
-        document.getElementById("kernel").innerHTML =
-`OS-Kernel (AIE)
-AIE-WAS     = ${holo.aie.QI}
-AIE-WIE     = ${holo.aie.IQQ}
-AIE-WARUM   = ${holo.aie.MIND}
-AIE-GESAMT  = ${holo.aie.AIE}`;
-
-        document.getElementById("axes").innerHTML =
-`AIR         = ${holo.sixE.score * 1.1}
-AIV         = ${holo.sixE.wetten * 1.2}
-XI          = ${holo.ftg.movement * 1.3}
-IX          = ${holo.ftg.energy * 1.4}
-X4          = ${holo.aie.AIE * 1.5}`;
-
-        const entry = document.createElement("div");
-        entry.textContent = `EVENT: movement=${holo.ftg.movement}, holo=${holo.sixE.hologramm}`;
-        historyBox.appendChild(entry);
+Chip-Boost  = ${chip.BOOST}
+Mana-Level  = ${mana.LEVEL}
+TRANS       = ${chan.TRANS}`;
     }
 
     setInterval(updatePC, 2000);
 </script>
-
-</body>
-</html>
