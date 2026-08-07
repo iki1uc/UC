@@ -1,42 +1,29 @@
-# TMP – README
-TMP ist ein zentraler Systemkern zur Erfassung, Verarbeitung und Ausgabe von RESPO‑Signalen.
-Es dient als Basis für Module, Sequenzen und Achsen innerhalb der TMP‑Konstellation.
-SYSTEM: TMP
-STATUS: aktiv
-RESPO: 265 (rdy)
-FREQ: 12e
-6D: D0–D5
+ 
+Site Status Checker
 
-🧩 4. Module
-TMP.respo — RESPO‑Kern
+A small, self-contained diagnostic tool for websites. It checks which pages/sections of a site are reachable, classifies their status, and compares pairs of sections to see how compatible they are.
 
-tmp.html — Zentrum
+What it does
+Checks a fixed list of pages on the site (via HTTP HEAD requests).
+Classifies each page's status as one of: OK, MISSING (wrong path), NETWORK ERROR, READY, COMPATIBLE, FIXED, DONE, HELP NEEDED, UNCLEAR.
+Computes a small set of properties for each status (a priority score, a category label, likely cause, likely effect, and an estimated impact/horizon score).
+Compares pairs of pages and rates how well they "pair up" (HOT / SYNC / START / LOW / FAIL) based on how similar their status, category, and impact score are.
+Displays the results as a readable report in the browser.
+Files
+File	Purpose
+index.html	Landing page with the human-readable status report
+404.html	Automatic diagnostic scanner, can be used as a custom 404 page
+translate.md	Full list of internal short codes and their plain-language meaning
+README.md	This file
+LICENSE	MIT License
+Usage
 
-ID.html — Identität
+Open index.html in a browser to see the status report. To use 404.html as a real 404 page on GitHub Pages: repository Settings → Pages → Source: branch main, folder /.
 
-room.html — Raum
+Why the internal short codes?
 
-t.html — T‑Sequenz
+The tool uses short internal codes (a few letters, e.g. RDY, FIT, MISS) to keep the data compact and easy to process in code. A translation table (translate.md) maps every code to a plain-language label, so the output stays readable for anyone viewing the page, without needing to know the internal codes.
 
-h.html — H‑Sequenz
+License
 
-b.html — B‑Sequenz
-🧩 5. 6D‑Mapping
-Code
-D0 = ROOT
-D1 = ACHSE
-D2 = TMP
-D3 = LAGE
-D4 = laTER
-D5 = ORT
-🧩 6. RESPO‑Status
-Code
-RESPO.265 = rdy
-PIPE = aktiv
-SEQ.360 = D0 → D1 → D2 → D3 → D4 → D5 → D0
-🧩 7. Frequenzkette
-Code
-iki → bir → uc → LE → iki1uc → GO → sys → tem → AU → RA → TET → RIZ
-🧩 8. Lizenz / Hinweise
-Code
-Dieses System ist experimentell und dient der strukturellen Darstellung von TMP‑Modulen.
+MIT — free to use and modify. Author credit (© iki1uc wieimmer) must be retained per the license terms. See LICENSE.
