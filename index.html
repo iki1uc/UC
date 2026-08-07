@@ -14,7 +14,8 @@ canvas { display:block; }
 
 <script type="module">
     import { PC } from "./PC.js";
-    import { VISIO3 } from "./VISIO3.js";
+    import { CONTINIUM } from "./CONTINIUM.js";
+    import { VISIO_AMIGA } from "./VISIO_AMIGA.js";
 
     const canvas = document.getElementById("scene");
 
@@ -27,15 +28,9 @@ canvas { display:block; }
 
         const pc = PC(sys, tem, iki, narrativ);
 
-        const CONTINIUM =
-            pc.cpu.holo +
-            pc.gpu.energy +
-            pc.ram.score +
-            pc.ram.wetten +
-            pc.mana.level +
-            pc.chip.BOOST;
+        const cont = CONTINIUM(pc);
 
-        VISIO3(canvas, CONTINIUM, pc.gpu, pc.mana, pc.chip);
+        VISIO_AMIGA(canvas, cont);
 
         requestAnimationFrame(loop);
     }
