@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>AIM – Aktiver Informations‑Modus</title>
+
+<style>
+body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+h1, h2 { color:#6cf; }
+pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; }
+
+.status-green  { color:#0f0; }
+.status-yellow { color:#ff0; }
+.status-red    { color:#f00; }
+</style>
+</head>
+
+<body>
+
+<h1>AIM – Aktiver Informations‑Modus</h1>
+
+<h2>Status</h2>
+<pre id="aim-status">Lade AIM…</pre>
+
+<h2>HOLO.build</h2>
+<pre id="aim-holo">Warte…</pre>
+
+<script type="module">
+    import { HOLO_BUILD } from "./HOLO.build.js";
+    import { TMP } from "./TMP.respo.js";
+
+    function updateAIM() {
+
+        const sys = { value: Math.random()*20, flow: 2 };
+        const tem = { value: 5, time: 3 };
+        const iki = { value: 7, core: 4 };
+
+        const narrativ = Math.floor(Math.random()*5)+1;
+        const neutral  = Math.floor(Math.random()*2);
+
+        const holo = HOLO_BUILD(sys, tem, iki, narrativ, neutral);
+
+        let colorClass = "status-green";
+        if (holo.sixE.hologramm < 20) colorClass = "status-red";
+        else if (holo.sixE.hologramm < 50) colorClass = "status-yellow";
+
+        const status = document.getElementById("aim-status");
+        status.innerHTML =
+`AIM-STATUS   = <span class="${colorClass}">${holo.status}</span>
+MOVEMENT     = ${holo.ftg.movement}
+ENERGIE      = ${holo.ftg.energy}
+QUALITÄT     = ${holo.ftg.quality}
+AIE-WAS      = ${holo.aie.QI}
+AIE-WIE      = ${holo.aie.IQQ}
+AIE-WARUM    = ${holo.aie.MIND}`;
+
+        const holoOut = document.getElementById("aim-holo");
+        holoOut.innerHTML =
+`HOLO.build (6e)
+Score       = ${holo.sixE.score}
+Wetten      = ${holo.sixE.wetten}
+Narrativ    = ${holo.sixE.narrativ}
+Neutral     = ${holo.sixE.neutral}
+Vektor      = ${holo.sixE.vektor}
+Hologramm   = ${holo.sixE.hologramm}
+Dimension   = ${holo.sixE.dimension}`;
+    }
+
+    setInterval(updateAIM, 2000);
+</script>
+
+</body>
+</html>
