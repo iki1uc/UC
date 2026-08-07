@@ -1,14 +1,13 @@
-export function UC_KERNEL(sys, tem, iki) {
+import { UC_KERNEL } from "./UC.kernel.js";
+
+export function RESPO_UC(sys, tem, iki) {
+    const uc = UC_KERNEL(sys, tem, iki);
 
     return {
-        SYS: sys,
-        TEM: tem,
-        IKI: iki,
-        UC: {
-            bind: true,
-            score: (sys.value + tem.value + iki.value) / 3,
-            evo: Math.round((sys.flow + tem.time + iki.core) * 1.3),
-            wetten: (sys.value * tem.time) % iki.core
-        }
+        axis: ["SYS", "TEM", "IKI", "UC"],
+        score: uc.UC.score,
+        evo: uc.UC.evo,
+        wetten: uc.UC.wetten,
+        bind: uc.UC.bind
     };
 }
