@@ -2,70 +2,110 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>TMP – Systemkern (Mainboard)</title>
+<title>UC – TMP Mainboard (Organisatorisch)</title>
 
 <style>
 body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
 h1, h2 { color:#6cf; }
 pre { background:#111; border:1px solid #333; padding:10px; margin-bottom:20px; }
-.status-green { color:#0f0; }
+
+.status-green  { color:#0f0; }
 .status-yellow { color:#ff0; }
-.status-red { color:#f00; }
+.status-red    { color:#f00; }
+
+.history-box {
+    background:#111;
+    border:1px solid #333;
+    padding:10px;
+    height:200px;
+    overflow-y:auto;
+}
 </style>
 </head>
 
 <body>
 
-<h1>TMP – Systemkern (Mainboard)</h1>
+<h1>UC – TMP Systemkern (Mainboard)</h1>
 
-<pre id="core-status">
-Lade Systemkern…
-</pre>
+<h2>Systemstatus</h2>
+<pre id="core-status">Lade Systemkern…</pre>
 
 <h2>HOLO – 6e‑Bild</h2>
-<pre id="holo-output">
-Warte auf HOLO.build…
-</pre>
+<pre id="holo-output">Warte auf HOLO.build…</pre>
+
+<h2>Organisatorischer Zustand</h2>
+<pre id="org-output">Warte auf Lage/Ort/Ereignis…</pre>
+
+<h2>Ereignis‑Historie</h2>
+<div class="history-box" id="history"></div>
 
 <script type="module">
-    import { FTG } from "./FTG.js";
+    import { HOLO_BUILD } from "./HOLO.build.js";
     import { TMP } from "./TMP.respo.js";
 
-    // Beispielwerte (du kannst später dynamisch machen)
-    const sys = { value: 10, flow: 2 };
-    const tem = { value: 5, time: 3 };
-    const iki = { value: 7, core: 4 };
+    const historyBox = document.getElementById("history");
 
-    const nuller = 1;   // Neutralität
-    const qi = 2;       // Narrativ
+    function updateMainboard() {
 
-    // FTG ausführen
-    const result = FTG(sys, tem, iki, nuller, qi);
+        // Beispielwerte (später dynamisch)
+        const sys = { value: Math.random()*20, flow: 2 };
+        const tem = { value: 5, time: 3 };
+        const iki = { value: 7, core: 4 };
 
-    // Mainboard‑Status anzeigen
-    const core = document.getElementById("core-status");
-    core.textContent =
+        const narrativ = Math.floor(Math.random()*5)+1;
+        const neutral  = Math.floor(Math.random()*2);
+
+        // HOLO.build ausführen
+        const holo = HOLO_BUILD(sys, tem, iki, narrativ, neutral);
+
+        // Farbstatus bestimmen
+        let colorClass = "status-green";
+        if (holo.sixE.hologramm < 20) colorClass = "status-red";
+        else if (holo.sixE.hologramm < 50) colorClass = "status-yellow";
+
+        // Systemstatus
+        const core = document.getElementById("core-status");
+        core.innerHTML =
 `SYSTEM        = TMP
 KONSTELLATION = TMP
 FREQ          = ${TMP.freq}
 6D            = D2
 360°          = aktiv
-STATUS        = ZENTRALER KERN
-MOVEMENT      = ${result.movement}
-ENERGIE       = ${result.energy}
-QUALITÄT      = ${result.quality}`;
+STATUS        = <span class="${colorClass}">${holo.status}</span>
+MOVEMENT      = ${holo.ftg.movement}
+ENERGIE       = ${holo.ftg.energy}
+QUALITÄT      = ${holo.ftg.quality}`;
 
-    // HOLO‑Bild anzeigen
-    const holo = document.getElementById("holo-output");
-    holo.textContent =
+        // HOLO‑Bild
+        const holoOut = document.getElementById("holo-output");
+        holoOut.innerHTML =
 `HOLO.build (6e)
-Score       = ${result.sixE.score}
-Wetten      = ${result.sixE.wetten}
-Narrativ    = ${result.sixE.narrativ}
-Neutral     = ${result.sixE.neutral}
-Vektor      = ${result.sixE.vektor}
-Hologramm   = ${result.sixE.hologramm}
-Dimension   = ${result.sixE.dimension}`;
+Score       = ${holo.sixE.score}
+Wetten      = ${holo.sixE.wetten}
+Narrativ    = ${holo.sixE.narrativ}
+Neutral     = ${holo.sixE.neutral}
+Vektor      = ${holo.sixE.vektor}
+Hologramm   = ${holo.sixE.hologramm}
+Dimension   = ${holo.sixE.dimension}`;
+
+        // Organisatorischer Zustand
+        const org = document.getElementById("org-output");
+        org.innerHTML =
+`LAGE        = ${TMP.axis[3]}        // D3
+ORT         = ${TMP.axis[5]}        // D5
+EREIGNIS    = ${holo.ftg.movement}
+AIE-WAS     = ${holo.aie.QI}
+AIE-WIE     = ${holo.aie.IQQ}
+AIE-WARUM   = ${holo.aie.MIND}`;
+
+        // Ereignis‑Historie
+        const entry = document.createElement("div");
+        entry.textContent = `EVENT: movement=${holo.ftg.movement}, holo=${holo.sixE.hologramm}`;
+        historyBox.appendChild(entry);
+    }
+
+    // Live‑Aktualisierung (Echtzeit)
+    setInterval(updateMainboard, 2000);
 </script>
 
 </body>
