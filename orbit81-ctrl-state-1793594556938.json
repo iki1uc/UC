@@ -1,0 +1,30 @@
+{
+  "currentIndex": 18,
+  "currentLoop": "WURZEL",
+  "currentState": "02002200",
+  "currentTMP": {
+    "a": 0,
+    "d": 2,
+    "e": 0,
+    "i": 0,
+    "o": 2,
+    "r": 2,
+    "s": 0,
+    "w": 0
+  },
+  "MODE_MASK": 7,
+  "nc": {
+    "MISS": 10,
+    "FAIL": 6,
+    "RDY": 9
+  },
+  "coverage": {
+    "reached81": 10,
+    "activeRoot": 12,
+    "cov81": 0.12345679012345678,
+    "covRoot": 0.4444444444444444,
+    "covTotal": 0.2037037037037037
+  },
+  "rootMode": "threshold",
+  "steps": 25
+}
